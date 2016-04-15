@@ -12,8 +12,11 @@
 	<div class="col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><i class="fa fa-link" aria-hidden="true"></i>
-					<a href="{{URL::asset('/blog/details/'.$article->id)}}" target="_blank">{{$article->title}}</a>
+				<h3 class="panel-title clearfix">
+					<span class="pull-left">
+						<i class="fa fa-link" aria-hidden="true"></i>&nbsp;
+						<a href="{{URL::asset('/blog/details/'.$article->id)}}" target="_blank">{{$article->title}}</a>
+					</span>
 					<div class="pull-right">
 						<a href="" style="color:#fff"><i class="fa fa-trash-o fa-fw" aria-hidden="true" title="删除"></i></a>
 						<a href="{{URL::asset('/admin/blog/edit/'.$article->id)}}" style="color:#fff"><i class="fa fa-pencil-square-o fa-fw" aria-hidden="true" title="编辑"></i></a>
@@ -29,13 +32,20 @@
 				<span><i class="fa fa-tags" aria-hidden="true"></i>标签</span>
 				<span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 赞同</span>
 				<span><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> 反对</span>
-				<span><i class="fa fa-spinner" aria-hidden="true"></i> 上次修改时间</span>
+				<span><i class="fa fa-spinner" aria-hidden="true"></i> {{$article->update_at}}</span>
 			</div>
 		</div>
 	</div>
 	@endforeach
 </div>
 <style type="text/css">
+	.panel-title span.pull-left{
+		overflow: auto;
+		display: flex;
+	}
+	.panel-title span.pull-left a {
+		color: #fff;
+	}
 	.panel-footer span {
 		font-size: 10px;
 		padding-left: 1em;
@@ -50,8 +60,6 @@
 @section('script')
 <script src="{{URL::asset('/assets/bower/masonry/dist/masonry.pkgd.min.js')}}"></script>
 <script type="text/javascript">
-	var msnry = new Masonry( '.article-list', {
-  	// options
-	});
+	$('.article-list').masonry();
 </script>
 @endsection
