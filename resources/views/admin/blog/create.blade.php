@@ -21,7 +21,6 @@
     			<li>{{ $error }}</li>
     			@endforeach
 		</ul>
-
                 @endif
             </div>
         </div>
@@ -29,8 +28,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">Add</div>
             <div class="panel-body">
-                <form action="{{ URL::asset('/admin/blog/create') }}" method="POST">
+                <form action="{{ URL::asset('/admin/blog/storearticle') }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="store" value="create">
                     <input type="text" name="title" class="form-control" required="required" placeholder="Title..." value="{{ Request::old('title') }}">
                     <br>
                     <input type="text" name="tag" class="form-control" placeholder="Tag..." value="{{ Request::old('tag') }}">

@@ -63,6 +63,10 @@ body {
     display: block;
 }
 
+.dropdown {
+    cursor: pointer;
+}
+
 .navbar-top-links .dropdown-menu li:last-child {
     margin-right: 0;
 }

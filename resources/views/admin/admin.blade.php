@@ -13,6 +13,7 @@
     <link href="{{URL::asset('/assets/bower/metisMenu/dist/metisMenu.min.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{URL::asset('/assets/css/sb-admin-2.css')}}" rel="stylesheet">
+    @yield('link')
     <!-- Custom Fonts -->
     <link href="{{URL::asset('/assets/bower/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <!-- <link href='http://fonts.useso.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'> -->
@@ -276,7 +277,7 @@
                             <a href="#frontend"><i class="fa fa-leaf fa-fw"></i> Front-End UI</a>
                         </li>
                         <li>
-                            <a href="{{URL::asset('/admin/blog/create')}}"><i class="fa fa-edit fa-fw"></i> Write Something Now<i class="fa fa-question-circle" style="padding-left: 0.5em"></i></a>
+                            <a href="{{URL::asset('/admin/blog/createarticle')}}"><i class="fa fa-edit fa-fw"></i> Write Something Now<i class="fa fa-question-circle" style="padding-left: 0.5em"></i></a>
                         </li>
                         <li>
                             <a href="#resume"><i class="fa fa-at fa-fw"></i> Resume</a>
@@ -308,10 +309,11 @@
     <!-- jQuery -->
     <script src="{{URL::asset('/assets/bower/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{URL::asset('/assets/bower/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{URL::asset('/assets/bower/bootstrap/dist/js/bootstrap.js')}}"></script>
     <!-- Metis Menu Plugin JavaScript -->
     <script src="{{URL::asset('/assets/bower/metisMenu/dist/metisMenu.min.js')}}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{{URL::asset('/assets/js/sb-admin-2.js')}}"></script>
+    @yield('script')
 </body>
 </html>
