@@ -138,4 +138,33 @@ class AdminBlogController extends Controller
 			'article' => Article::findorfail($id)
 			]);
 	}
+
+	/**
+	 *    辅助函数:输入一个从数据库提取的时间字符串，输出形象时间概念，如：
+	 *    	发表时间于当前时间间隔小于60s：刚刚，
+	 *    	发表时间于当前时间间隔<=30min：[0,1,2,...,30]min前，
+	 *    	发表时间于当前时间间隔小于1h大于30min：半小时前，
+	 *    	发表时间于当前时间间隔>=1h<1d：[1,2,3,...,23]h前，
+	 *    	发表时间于当前时间间隔>=1d：[1,2,3,...,n]d前，
+	 *    	发表时间于当前时间间隔>3d：直接输出日期，
+	 *    @method timeEcho
+	 *    @param  [type]   $time [description]
+	 *    @return [type]         [description]
+	 */
+	static function timeEcho($time) {
+		$now = strtotime(\Carbon\Carbon::now('PRC'));
+		$time = strtotime($time);
+		/** @var int 时间差，单位为秒 */
+		$disSec = $now - $time;
+
+		if(ceil($disSec) < 60)					//小于1分钟
+			return "刚刚";
+		elseif(ceil($disSec) < 60*30)				//小于30分钟
+			return ceil($disSec/60)."分钟前";
+		elseif(ceil($disSec) < 60*60*24)				//小于1天
+			return '约'.ceil($disSec/(60*60))."小时前";
+		elseif(ceil($disSec) < 60*60*24*3)			//小于3天前
+			return ceil($disSec/(60*60*24))."天前";
+		else return ($now - $time)/60;				//大于3天，返回年月日
+	}
 }
