@@ -26,6 +26,12 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<!-- UY BEGIN -->
+			<div id="uyan_frame"></div>
+			<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+			<!-- UY END -->
+		</div>
 	</div>
 </div>
 </body>

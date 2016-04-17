@@ -146,6 +146,10 @@ body {
     padding-left: 52px;
 }
 
+.navbar-static-top {
+    z-index: 500;
+}
+
 @media(min-width:768px) {
     .sidebar {
         z-index: 1;

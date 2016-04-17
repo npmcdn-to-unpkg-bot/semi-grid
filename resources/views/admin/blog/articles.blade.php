@@ -24,13 +24,7 @@
 				</h3>
 			</div>
 			<div class="panel-body">
-				@if(is_string($article->update_at))
-					String:{{$article->update_at}}
-				@elseif(is_object($article->update_at))
-					Object:{{print_r($article->update_at)}}
-				@else
-					None
-				@endif
+				{{ $article->intro }}
 			</div>
 			<div class="panel-footer text-muted" style="padding: 4px 10px">
 				<span title="评论"><i class="fa fa-commenting-o" aria-hidden="true"></i> 评论</span>

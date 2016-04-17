@@ -13,7 +13,9 @@
     <link href="{{URL::asset('/assets/bower/metisMenu/dist/metisMenu.min.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{URL::asset('/assets/css/sb-admin-2.css')}}" rel="stylesheet">
-    @yield('link')
+
+    @yield('head')
+    
     <!-- Custom Fonts -->
     <link href="{{URL::asset('/assets/bower/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <!-- <link href='http://fonts.useso.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'> -->
@@ -23,6 +25,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+        <!-- jQuery -->
+    <script src="{{URL::asset('/assets/bower/jquery/dist/jquery.min.js')}}"></script>
 </head>
 
 <body>
@@ -306,8 +310,6 @@
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
-    <!-- jQuery -->
-    <script src="{{URL::asset('/assets/bower/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="{{URL::asset('/assets/bower/bootstrap/dist/js/bootstrap.js')}}"></script>
     <!-- Metis Menu Plugin JavaScript -->
