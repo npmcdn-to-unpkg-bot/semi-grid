@@ -281,7 +281,7 @@
                             <a href="#frontend"><i class="fa fa-leaf fa-fw"></i> Front-End UI</a>
                         </li>
                         <li>
-                            <a href="{{URL::asset('/admin/blog/createarticle')}}"><i class="fa fa-edit fa-fw"></i> Write Something Now<i class="fa fa-question-circle" style="padding-left: 0.5em" title="Write down what happened today or share some good idea if you have."></i></a>
+                            <a href="{{URL::asset('/admin/blog/create-article')}}"><i class="fa fa-edit fa-fw"></i> Write Something Now<i class="fa fa-question-circle" style="padding-left: 0.5em" title="Write down what happened today or share some good idea if you have."></i></a>
                         </li>
                         <li>
                             <a href="#resume"><i class="fa fa-at fa-fw"></i> Resume</a>
@@ -290,7 +290,7 @@
                             <a href="#work"><i class="fa fa-laptop fa-fw"></i> Work<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{URL::asset('/admin/work/done')}}"><i class="fa fa-star"></i> What have I done<i class="fa fa-question-circle" style="padding-left: 0.5em" title="Show all project I had done."></i></a>
+                                    <a href="{{URL::asset('/admin/work/done')}}"><i class="fa fa-star"></i> What I have done<i class="fa fa-question-circle" style="padding-left: 0.5em" title="Show all project I had done."></i></a>
                                 </li>
                                 <li>
                                     <a href="{{URL::asset('/admin/work/doing')}}"><i class="fa fa-star-half-o"></i> What I'm doing<i class="fa fa-question-circle" style="padding-left: 0.5em" title="Show all project I'm doing."></i></a>

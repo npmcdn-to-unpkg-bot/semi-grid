@@ -48,8 +48,6 @@
 
                 var dialogContent = ( (settings.imageUpload) ? "<form action=\"" + action +"\" target=\"" + iframeName + "\" method=\"post\" enctype=\"multipart/form-data\" class=\"" + classPrefix + "form\">" : "<div class=\"" + classPrefix + "form\">" ) +
                                         ( (settings.imageUpload) ? "<iframe name=\"" + iframeName + "\" id=\"" + iframeName + "\" guid=\"" + guid + "\"></iframe>" : "" ) +
-                                        /*后台框架为laravel ,对于token的验证比较严格，每个请求必须带_token字段*/
-                                        "<input type=\"hidden\" name=\"_token\" value=\""+$('input[name="_token"]').val()+"\">" +
                                         "<label>" + imageLang.url + "</label>" +
                                         "<input type=\"text\" data-url />" + (function(){
                                             return (settings.imageUpload) ? "<div class=\"" + classPrefix + "file-input\">" +
@@ -64,6 +62,7 @@
                                         "<label>" + imageLang.link + "</label>" +
                                         "<input type=\"text\" value=\"http://\" data-link />" +
                                         "<br/>" +
+                                        "<input type=\"hidden\" name=\"_token\" value=\""+$('meta[name="csrf-token"]').attr('content')+"\">"+
                                     ( (settings.imageUpload) ? "</form>" : "</div>");
 
                 //var imageFooterHTML = "<button class=\"" + classPrefix + "btn " + classPrefix + "image-manager-btn\" style=\"float:left;\">" + imageLang.managerButton + "</button>";

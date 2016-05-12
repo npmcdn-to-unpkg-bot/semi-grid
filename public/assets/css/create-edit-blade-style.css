@@ -1,0 +1,94 @@
+.message-box {
+	display: none;
+	position: fixed;
+	top: 60px;
+	right: 10px;
+	width: auto;
+	padding-right: 2em;
+	z-index: 10000;
+}
+.title {
+	border: none;
+	outline: none;
+	font-size: 1.6em;
+	text-align: center;
+	margin-bottom: 1.3em;
+	width: 100%;
+}
+.edit-box .btn {
+	margin-top: 1em;
+	margin-bottom: 2.3em;
+	margin-right: 0.8em;
+}
+.edit-box .tag-edit {
+	margin-bottom: .5em;
+}
+.edit-box .tag-edit ul.tag-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+.edit-box .tag-edit ul.tag-list li.tag-item {
+	background-color: #777;
+	color: #fff;
+	margin-right: 0.2em;
+	font-size: 10px;
+	padding: 0.1em 0.4em;
+	border-radius: 3px;
+	cursor: pointer;
+	display: inline-block;
+}
+.edit-box .tag-edit .edit-tag:hover .remove-tag {
+	display: inline-block;
+}
+.edit-box .tag-edit .edit-tag .remove-tag {
+	float: none;
+	color: #fff;
+}
+.edit-box .tag-edit .add-tag {
+	border: none;
+	outline: none;
+	font-size: 10px;
+	color: #777;
+	display: none;
+}
+.edit-box .tag-edit .add-tag-btn {
+	background-color: #777;
+	color: #fff;
+	margin-right: 0.2em;
+	font-size: 10px;
+	padding: 0.2em 0.5em;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.edit-box .tag-edit ul.tag-select {
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	font-size: 10px;
+	color: #666;
+	display: none;
+	position: absolute;
+	z-index: 10000;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.edit-box .tag-edit ul.tag-select li.tag-select-item {
+	padding: 0.2em 3em 0.2em 0.5em;
+	margin: 0;
+	transition: 0.2s;
+	cursor: pointer;
+	border-radius: 3px;
+}
+.edit-box .tag-edit ul.tag-select li.hide {
+	color: #777;
+}
+.edit-box .tag-edit .tag-select .tag-select-item:hover {
+	background-color: #999;
+	color: #fff;
+}
+a.editormd-preview-close-btn {
+	display: none;
+}

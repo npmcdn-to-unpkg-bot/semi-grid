@@ -8,6 +8,7 @@ use App\Tag;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
+use DB;
 
 class AdminBlogController extends Controller
 {
@@ -48,17 +49,46 @@ class AdminBlogController extends Controller
 
 	/**
 	 *    新建标签
-	 *    @method getCreatetag
-	 *    @param  Request      $request 
-	 *    @return vew
+	 *    @method postAddTag
+	 *    @param  Request    $request [description]
+	 *    @return [type]              [description]
 	 */
-	public function getCreatetag(Request $request) {
-		$tag = new Tag;
-		$tag->tag_name = $request->input('tag_name');
-		$tag->save();
-		return view('admin.blog.tags', ['user' => $request->user()]);
+	public function postAddTag(Request $request) {
+		$result = array();
+		//如果标签存在，返回字符串消息
+		//不存在则新建
+		if(Tag::where('tag_name', $request->input('tag_name'))->first()) {
+			$result['status'] = 0;
+			$result['content'] = 'This tag already exists';
+		} else {
+			$tag = new Tag;
+			$tag->tag_name = $request->input('tag_name');
+			$tag->save();
+			$result['status'] = 1;
+			$result['content'] = $tag;
+		}
+		return json_encode($result);
 	}
 
+	/**
+	 *    删除标签
+	 *    @method postDelTag
+	 *    @param  Request    $request [description]
+	 *    @return [type]              [description]
+	 */
+	public function postDelTag(Request $request) {
+		Tag::findorfail($request->input('id'))->delete();
+		return 1;
+	}
+
+	public function postUpdateTag(Request $request) {
+		if(Tag::where('tag_name', $request->input('tag_name'))->first())
+			return "This tag already exists";
+		$tag = Tag::findorfail($request->input('id'));
+		$tag->tag_name = $request->input('tag_name');
+		$tag->save();
+		return 1;
+	}
 	/**
 	 *    文章回收站
 	 *    @method getTrash
@@ -66,7 +96,11 @@ class AdminBlogController extends Controller
 	 *    @return  view
 	 */
 	public function getTrash(Request $request) {
-		return view('admin.blog.trash', ['user' => $request->user()]);
+		$articles = Article::onlyTrashed()->get();
+		return view('admin.blog.trash', [
+			'user' => $request->user(),
+			'articles' => $articles
+			]);
 	}
 
 	/**
@@ -75,8 +109,11 @@ class AdminBlogController extends Controller
 	 *    @param  Request          $request
 	 *    @return  view
 	 */
-	public function getCreatearticle(Request $request) {
-		return view('admin.blog.create', ['user' => $request->user()]);
+	public function getCreateArticle(Request $request) {
+		return view('admin.blog.create', [
+			'user' => $request->user(),
+			'tags' => Tag::all()
+			]);
 	}
 
 	/**
@@ -85,34 +122,83 @@ class AdminBlogController extends Controller
 	 *    @param  Request    $request post 请求
 	 *    @return   view
 	 */
-	public function postStorearticle(Request $request) {
+	public function postStoreArticle(Request $request) {
+		$result = array();
 		$validator = Validator::make($request->all(),[
 			'title' => 'required|max:255',
-			'content' =>'required',
-			'intro' => 'required',
-			'tag' => 'required'
+			'content' =>'required'
 			]);
 		if( $validator->fails() ) {
-			return redirect()->back()
-				->with([
-					'status' => 'There are some errors on your input.',
-					'errors' => $validator->messages(),
-					'class' => 'danger'
-					])->withInput();
+			$result['status'] = 0;
+			$result['content'] = $validator->messages();
+		} else {
+			/**
+			 *    store字段表示此请求的是新建一篇文章或者修改已有文章
+		 	*/
+			if($request->input('store') == 'create')
+				$article = new Article;
+			else $article = Article::findorfail($request->input('id'));
+			$article->title = $request->input('title');
+			$article->content = $request->input('content');
+			$article->save();
+			/**
+			 *    插入之前将所有该文章的标签删除
+			 */
+			DB::table('relationships')->where('article_id',$article->id)->delete();
+			if(!empty($request->input('tags'))) {
+				/**
+				 *    插入标签列表数据
+				 *    @var array
+				 */
+				$tagArray = array();
+				foreach (array_unique($request->input('tags')) as $value)
+					array_push($tagArray, [
+						'article_id' => $article->id,
+						'tag_id' => $value
+					]);
+				DB::table('relationships')->insert($tagArray);
+			}
+			$result['status'] = 1;
+			$result['content'] = $article;
 		}
-		if($request->input('store') == 'create')
-			$article = new Article;
-		else $article = Article::findorfail($request->input('id'));
-		$article->title = $request->input('title');
-		$article->intro = $request->input('intro');
-		$article->tag = $request->input('tag');
-		$article->content = $request->input('content');
-		$article->update_at = \Carbon\Carbon::now('PRC');
-		$article->save();
-		return redirect()->back()->with([
-			'status' => 'Blog Stored!',
-			'class' => 'success'
-			]);
+		return json_encode($result);
+	}
+
+	/**
+	 *    将文章放入回收站
+	 *    @method postDeleteArticle
+	 *    @param  Request           $request  Ajax
+	 *    @return [type]                     status
+	 */
+	public function postDeleteArticle(Request $request) {
+		Article::findorfail($request->input('id'))->delete();
+		return 1;
+	}
+
+	/**
+	 *    彻底删除一篇文章
+	 *    @method postAbsdelArticle
+	 *    @param  Request           $request [description]
+	 *    @return [type]                     [description]
+	 */
+	public function postAbsdelArticle(Request $request) {
+		Article::withTrashed()
+		->where('id', $request->input('id'))
+		->forceDelete();
+		return 1;
+	}
+
+	/**
+	 *    从回收站恢复一篇文章
+	 *    @method postRestoreArticle
+	 *    @param  Request            $request [description]
+	 *    @return [type]                      [description]
+	 */
+	public function postRestoreArticle(Request $request) {
+		Article::withTrashed()
+		->where('id', $request->input('id'))
+		->restore();
+		return 1;
 	}
 
 	/**
@@ -132,10 +218,17 @@ class AdminBlogController extends Controller
 	 *    @param  int  $id      请求编辑的文章id
 	 *    @return   view          视图文件
 	 */
-	public function getEdit(Request $request, $id) {
+	public function getEditArticle(Request $request, $id) {
 		return view('admin.blog.edit', [
 			'user' => $request->user(),
-			'article' => Article::findorfail($id)
+			'article' => Article::findorfail($id),
+			'allTags' => Tag::all(),
+			'tags' => DB::table('articles')
+				->select('tags.id', 'tags.tag_name')
+				->leftjoin('relationships', 'articles.id', '=', 'relationships.article_id')
+				->leftjoin('tags', 'tags.id', '=', 'relationships.tag_id')
+				->where('articles.id',$id)
+				->get()
 			]);
 	}
 
@@ -157,23 +250,23 @@ class AdminBlogController extends Controller
 		$disSec = $now - strtotime($time);
 
 		if(ceil($disSec) < 60)					//小于1分钟
-			return "刚刚";
+		return "刚刚";
 		elseif(ceil($disSec) < 60*60)				//小于60分钟
-			return ceil($disSec/60)."分钟前";
+		return ceil($disSec/60)."分钟前";
 		elseif(ceil($disSec) < 60*60*24)				//小于1天
-			return '约'.ceil($disSec/(60*60))."小时前";
+		return '约'.ceil($disSec/(60*60))."小时前";
 		elseif(ceil($disSec) < 60*60*24*3)			//小于3天前
-			return ceil($disSec/(60*60*24))."天前";
+		return ceil($disSec/(60*60*24))."天前";
 		else return $time;				//大于3天，返回年月日
 	}
 
 	/**
-	 *    [postUpload description]
+	 *    图片上传
 	 *    @method postUpload
 	 *    @param  Request    $request [description]
 	 *    @return [type]              [description]
 	 */
-	public function postUploadimage(Request $request) {
+	public function postUploadImage(Request $request) {
 		$status = 0;
 		$message = "Image upload faild. Please try again.";
 		$url = '';

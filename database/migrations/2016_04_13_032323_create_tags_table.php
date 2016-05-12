@@ -13,6 +13,7 @@ class CreateTagsTable extends Migration
     public function up()
     {
         Schema::create('tags', function (Blueprint $table) {
+            $table->collation = 'utf8_bin';
             $table->increments('id');
             $table->char('tag_name', 25);
             $table->timestamps();

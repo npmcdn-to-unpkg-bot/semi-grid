@@ -4,3 +4,4 @@
 .env*
 /storage/
 /bootstrap/cache/
+/public/assets/images/
